@@ -1,9 +1,12 @@
 package com.example.snakeandladdergame;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -21,8 +24,13 @@ public class SnakeLadder extends Application {
     Pane createContent() {
         Pane root = new Pane();
         root.setPrefSize(width * tileSize, height * tileSize + 50);
+         int diceValue;
 
         int lowerLine = tileSize * height;
+        private void  getDiceValue(){
+            diceValue = (int)(Math.random()*6+1);
+            rolledDiceValueLabel.setText("Dice Value : " + diceValue);
+        }
 
         Player firstPlayer = new Player(tileSize, Color.BLACK, "Amit");
         Player secondPlayer = new Player(tileSize - 10, Color.WHITE, "Sumit");
@@ -39,11 +47,23 @@ public class SnakeLadder extends Application {
 
         Button playerOneButton = new Button("Player One");
         playerOneButton.setTranslateX(20);
+        playerOneButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                firstPlayer.movePalyer(diceValue);
+            }
+        });
+
+
         playerOneButton.setTranslateY(lowerLine + 20);
         Button playerTwoButton = new Button("Player Two");
 
+
         playerTwoButton.setTranslateX(250);
         playerTwoButton.setTranslateY(lowerLine + 20);
+
+        Label rolledDicevalueLabel = new Label("Start the game");
+        rolledDicevalueLabel.setTranslateY(lowerLine + 20);
 
 //        Image img=new Image(newFileInputStream("I:\\SnakeAndLadderGame\\src\\main\\resources\\SnakeLadderBoard12Nov.jpg"));
 //        ImageView boardImage = new ImageView();

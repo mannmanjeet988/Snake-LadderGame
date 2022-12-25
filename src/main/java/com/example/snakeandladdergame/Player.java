@@ -8,6 +8,8 @@ public class Player {
     private String name;
     private int coinPosition;
 
+    private static Board gameBoard = new Board();
+
     public Circle getCoin() {
 
         return coin;
@@ -30,6 +32,14 @@ public class Player {
         coin.setFill(coinColor);
         coin.setTranslateX(20);
         coin.setTranslateY(380);
+    }
+
+    public void movePalyer(int diceValue){
+        if(coinPosition + diceValue <=100){
+            coinPosition+= diceValue;
+            coin.setTranslateX(gameBoard.getXCordinate((coinPosition)));
+            coin.setTranslateY(gameBoard.getYCordinate((coinPosition)));
+        }
     }
 
 }
