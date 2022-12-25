@@ -20,20 +20,19 @@ import java.io.InputStream;
 public class SnakeLadder extends Application {
 
     public static final int tileSize=40, height = 10, width = 10;
+    int lowerLine = tileSize * height;
+    int diceValue;
+    Label rolledDiceValueLabel;
+
+    Button startGameButton;
+    boolean firstPlayerTurn = true, secondPlayerTurn = false, gameStarted = false;
+
+    Player firstPlayer = new Player(tileSize, Color.BLACK, "Amit");
+    Player secondPlayer = new Player(tileSize - 10, Color.WHITE, "Sumit");
 
     Pane createContent() {
         Pane root = new Pane();
         root.setPrefSize(width * tileSize, height * tileSize + 50);
-         int diceValue;
-
-        int lowerLine = tileSize * height;
-        private void  getDiceValue(){
-            diceValue = (int)(Math.random()*6+1);
-            rolledDiceValueLabel.setText("Dice Value : " + diceValue);
-        }
-
-        Player firstPlayer = new Player(tileSize, Color.BLACK, "Amit");
-        Player secondPlayer = new Player(tileSize - 10, Color.WHITE, "Sumit");
 
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
@@ -50,20 +49,66 @@ public class SnakeLadder extends Application {
         playerOneButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                firstPlayer.movePalyer(diceValue);
+                if(gameStarted){
+                    if(firstPlayerTurn){
+                        setDiceValue();
+                        firstPlayer.movePalyer(diceValue);
+                        if(firstPlayer.playerWon() != null){
+                            rolledDiceValueLabel.setText(firstPlayer.playerWon());
+                            firstPlayerTurn = true;
+                            secondPlayerTurn = false;
+                            gameStarted = false;
+                        }
+                        firstPlayerTurn = false;
+                        secondPlayerTurn = true;
+                    }
+                }
             }
         });
 
-
         playerOneButton.setTranslateY(lowerLine + 20);
-        Button playerTwoButton = new Button("Player Two");
 
+        Button playerTwoButton = new Button("Player Two");
+        playerTwoButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                if(gameStarted){
+                    if(secondPlayerTurn){
+                        setDiceValue();
+                        secondPlayer.movePalyer(diceValue);
+                        if(secondPlayer.playerWon() != null){
+                            rolledDiceValueLabel.setText(secondPlayer.playerWon());
+                            firstPlayerTurn = true;
+                            secondPlayerTurn = false;
+                            gameStarted = false;
+                            startGameButton.setDisable(false);
+                            startGameButton.setText("START GAME");
+                        }
+                        secondPlayerTurn = false;
+                        firstPlayerTurn = true;
+                    }
+                }
+            }
+        });
+
+        startGameButton = new Button("START");
+        startGameButton.setTranslateX(130);
+        startGameButton.setTranslateY(lowerLine + 50);
+        startGameButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                gameStarted = true;
+                startGameButton.setText("Ongoing Game");
+                startGameButton.setDisable(true);
+            }
+        });
 
         playerTwoButton.setTranslateX(250);
         playerTwoButton.setTranslateY(lowerLine + 20);
 
         Label rolledDicevalueLabel = new Label("Start the game");
         rolledDicevalueLabel.setTranslateY(lowerLine + 20);
+        rolledDicevalueLabel.setTranslateX(150);
 
 //        Image img=new Image(newFileInputStream("I:\\SnakeAndLadderGame\\src\\main\\resources\\SnakeLadderBoard12Nov.jpg"));
 //        ImageView boardImage = new ImageView();
@@ -83,10 +128,16 @@ public class SnakeLadder extends Application {
         boardImage.setFitWidth(tileSize * width);
         boardImage.setFitHeight(tileSize * height);
 
-        root.getChildren().addAll(boardImage, playerOneButton, playerTwoButton, firstPlayer.getCoin(), secondPlayer.getCoin());
+        root.getChildren().addAll(boardImage, playerOneButton, playerTwoButton,
+                firstPlayer.getCoin(), secondPlayer.getCoin(), rolledDiceValueLabel,startGameButton);
+
         return root;
     }
 
+    private void setDiceValue(){
+        diceValue = (int)(Math.random()*6+1);
+        rolledDiceValueLabel.setText("Dice Value : " + diceValue);
+    }
     @Override
     public void start(Stage stage) throws IOException {
        // FXMLLoader fxmlLoader = new FXMLLoader(SnakeLadder.class.getResource("hello-view.fxml"));

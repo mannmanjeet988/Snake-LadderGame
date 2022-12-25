@@ -1,7 +1,9 @@
 package com.example.snakeandladdergame;
 
+import javafx.animation.TranslateTransition;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.util.Duration;
 
 public class Player {
     private Circle coin;
@@ -10,19 +12,46 @@ public class Player {
 
     private static Board gameBoard = new Board();
 
-    public Circle getCoin() {
+    public void movePlayer(int diceValue){
+        if( coinPosition + diceValue <= 100 ) {
+            coinPosition += diceValue;
+//            coin.setTranslateX(gameBoard.getXCordinate(coinPosition));
+//            coin.setTranslateY(gameBoard.getYCordinate(coinPosition));
+            translatePlayer();
 
+            int newPosition = gameBoard.getNextPosition(coinPosition);
+            if (newPosition != coinPosition) {
+                coinPosition = newPosition;
+                translatePlayer();
+            }
+        }
+    }
+
+    public String playerWon(){
+        if(coinPosition==100){
+            return name + " Won the Game";
+        }
+        return null;
+    }
+
+    public Circle getCoin() {
         return coin;
     }
 
-//    public String setName() {
-//        this.name= name;
-//
-//    }
+    public void setName(String name) {
+        this.name= name;
+    }
 
     public int getCoinPosition() {
-
         return coinPosition;
+    }
+
+    public void translatePlayer(){
+        TranslateTransition move = new TranslateTransition(Duration.millis(1000),this.coin);
+        move.setToX(gameBoard.getXCordinate(coinPosition));
+        move.setToY(gameBoard.getYCordinate(coinPosition));
+        move.setAutoReverse(false);
+        move.play();
     }
 
     public Player(int tileSize, Color coinColor, String playerName){
