@@ -46,10 +46,10 @@ public class Player {
         return coinPosition;
     }
 
-    public void translatePlayer(){
+    private void translatePlayer(){
         TranslateTransition move = new TranslateTransition(Duration.millis(1000),this.coin);
-        move.setToX(gameBoard.getXCordinate(coinPosition));
-        move.setToY(gameBoard.getYCordinate(coinPosition));
+        move.setToX(gameBoard.getXCoordinate(coinPosition));
+        move.setToY(gameBoard.getYCoordinate(coinPosition));
         move.setAutoReverse(false);
         move.play();
     }
@@ -66,8 +66,8 @@ public class Player {
     public void movePalyer(int diceValue){
         if(coinPosition + diceValue <=100){
             coinPosition+= diceValue;
-            coin.setTranslateX(gameBoard.getXCordinate((coinPosition)));
-            coin.setTranslateY(gameBoard.getYCordinate((coinPosition)));
+            coin.setTranslateX(gameBoard.getXCoordinate((coinPosition)));
+            coin.setTranslateY(gameBoard.getYCoordinate((coinPosition)));
         }
     }
 
