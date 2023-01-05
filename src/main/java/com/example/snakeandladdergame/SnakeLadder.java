@@ -20,6 +20,7 @@ import java.io.InputStream;
 public class SnakeLadder extends Application {
 
     public static final int tileSize=40, height = 10, width = 10;
+
     int lowerLine = tileSize * height;
     int diceValue;
    static Label rolledDiceValueLabel;
@@ -56,7 +57,7 @@ public class SnakeLadder extends Application {
                 if(gameStarted){
                     if(firstPlayerTurn){
                         setDiceValue();
-                        firstPlayer.movePalyer(diceValue);
+                        firstPlayer.movePlayer(diceValue);
                         if(firstPlayer.playerWon() != null){
                             rolledDiceValueLabel.setText(firstPlayer.playerWon());
                             firstPlayerTurn = true;
@@ -64,6 +65,8 @@ public class SnakeLadder extends Application {
                             gameStarted = false;
                             startGameButton.setDisable(false);
                             startGameButton.setText("START GAME");
+//                            firstPlayer.fixFirstPosition();
+//                            secondPlayer.fixFirstPosition();
                         }
                         firstPlayerTurn = false;
                         secondPlayerTurn = true;
@@ -81,7 +84,7 @@ public class SnakeLadder extends Application {
                 if(gameStarted){
                     if(secondPlayerTurn){
                         setDiceValue();
-                        secondPlayer.movePalyer(diceValue);
+                        secondPlayer.movePlayer(diceValue);
                         if(secondPlayer.playerWon() != null){
                             rolledDiceValueLabel.setText(secondPlayer.playerWon());
                             firstPlayerTurn = true;
@@ -89,6 +92,8 @@ public class SnakeLadder extends Application {
                             gameStarted = false;
                             startGameButton.setDisable(false);
                             startGameButton.setText("START GAME");
+//                            firstPlayer.fixFirstPosition();
+//                            secondPlayer.fixFirstPosition();
                         }
                         secondPlayerTurn = false;
                         firstPlayerTurn = true;
@@ -104,6 +109,8 @@ public class SnakeLadder extends Application {
         startGameButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+                firstPlayer.fixFirstPosition();
+                secondPlayer.fixFirstPosition();
                 gameStarted = true;
                 startGameButton.setText("Ongoing Game");
                 startGameButton.setDisable(true);

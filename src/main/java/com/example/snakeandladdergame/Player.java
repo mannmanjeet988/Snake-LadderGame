@@ -63,12 +63,11 @@ public class Player {
         coin.setTranslateY(380);
     }
 
-    public void movePalyer(int diceValue){
-        if(coinPosition + diceValue <=100){
-            coinPosition+= diceValue;
-            coin.setTranslateX(gameBoard.getXCoordinate((coinPosition)));
-            coin.setTranslateY(gameBoard.getYCoordinate((coinPosition)));
-        }
+    public void fixFirstPosition(){
+        coinPosition=1;
+        coin.setTranslateX(20);
+        coin.setTranslateY(380);
+       movePlayer(0);
     }
 
 }
